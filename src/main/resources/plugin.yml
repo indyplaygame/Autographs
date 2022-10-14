@@ -1,0 +1,10 @@
+name: Autographs
+main: indy.autographs.main.Main
+version: '${project.version}'
+api-version: 1.18
+authors: [ indyPlayGames ]
+
+commands:
+  autograph:
+    description: Signs holding item.
+    aliases: [autograph]
