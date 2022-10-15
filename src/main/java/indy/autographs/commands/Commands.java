@@ -19,15 +19,23 @@ public class Commands implements CommandExecutor {
             Player player = (Player) sender;
             ItemStack item = player.getInventory().getItemInMainHand();
             ItemMeta meta = item.getItemMeta();
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
+            List<String> newLore = (List<String>) Utils.getConfig().getList("Autographs.autograph-format");
+
             if(meta.getLore() != null) {
                 lore = meta.getLore();
             }
 
+            for(int i = 0; i < newLore.size(); i++) {
+                newLore.set(i, Utils.colorFormat(newLore.get(i)).replace("%player%", player.getName()));
+            }
+
             if (args.length == 0) {
                 if (Utils.getConfig().getBoolean("Autographs.allow-no-name-autograph")) {
-                    for (Object loreLine : Utils.getConfig().getList("Autographs.autograph-format")) {
-                        lore.add(Utils.colorFormat(((String) loreLine)).replace("%player%", player.getName()));
+                    if(!lore.containsAll(newLore)) {
+                        for (Object loreLine : newLore) {
+                            lore.add(Utils.colorFormat((String) loreLine));
+                        }
                     }
                     meta.setLore(lore);
                     item.setItemMeta(meta);
